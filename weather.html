@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<head>
+    <title>
+        weather API
+    </title>
+    <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.15.3/css/all.css">       
+</head>
+<body>
+    <div class="outline">
+        <div id="sunny"> 
+            <i class="fa fa-sun" style="color: #f7cb49;"></i>
+        </div>
+        <div class="divider">
+            ***********************************************
+        </div>
+        <div class="contents">
+            <div id=location>
+                {%location%}               <!--you can use any name here-->
+            </div>
+            <div id=temp>
+                {%tempVal%}&deg;c        <!-- we used '&' to include degree symbol by &deg -->
+            </div>
+            <div id="status">
+                sunny
+            </div>
+            <div id="day">
+                Fri
+            </div>
+            <div id="date">
+                Date
+            </div>
+            <div id="time">
+                Time
+            </div>
+        </div>
+    </div>
+
+
+    <style>             /* In node js using css externally will not work,that's why Express js is an library to overcome this problem*/
+    
+*{
+    margin: 0;
+    padding: 0;
+}
+body{
+    background: rgb(22, 22, 22);
+}
+.outline{
+    position: absolute;
+    height: 60vh;
+    width: 50vh;
+    background-color: rgb(158, 146, 146);
+    top: 50%;
+    right: 50%;
+    transform: translate(50%,-50%);
+    box-shadow: 10px 10px 5px black;
+}
+.divider{
+    position: relative;
+    top:45%;
+    left: 0;
+}
+#location{
+    position: absolute;
+    font-size: 1.5em;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-weight: bolder;
+    top:50%;
+    left: 38%;
+    transform: translate(-50%,50%);
+}
+#temp{
+    position: absolute;
+    font-size: 1.5em;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    top:50%;
+    left: 62%;
+    transform: translate(-50%,50%);
+}
+#status{
+    position: absolute;
+    font-family: cursive;
+    letter-spacing: 4px;
+    font-size: 1em;
+    top:60%;
+    left: 51%;
+    transform: translate(-50%,50%);
+}
+#day{
+    position: absolute;
+    top: 26em;
+    left:10%;
+    font-family:  -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+#date{
+    position: absolute;
+    top: 26em;
+    left:45%;
+    font-weight: bolder;
+    font-family:  -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+#time{
+    position: absolute;
+    top: 26.2em;
+    right: 10%;
+    font-family:  -apple-system,BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', 
+}
+#sunny{
+    position: absolute;
+    font-size: 10em;
+    top: -17%;
+    left:50%;
+    transform: translate(-50%,50%);
+}
+
+    </style>
+    
+
+    <script>
+        // to check weather status as sunny,cloudy,rainy,etc
+        let weatherCon = document.getElementById("sunny");              // use id in most of the case for errorless output
+        const curStatus = "{%tempStatus%}";
+
+        let textStatus = document.getElementById("status");
+
+        if(curStatus == "Sunny")
+        {
+            weatherCon.innerHTML = "<i class='fa fa-sun' style='color: #f7cb49;'></i>";
+            textStatus.innerHTML = "sunny";
+        }
+        else if(curStatus == "Clouds")
+        {
+            weatherCon.innerHTML = "<i class='fa fa-cloud' style='color: rgb(56, 54, 54);'></i>";
+            textStatus.innerHTML = "cloudy";      
+        }
+        else if(curStatus == "Rainy")
+        {
+            weatherCon.innerHTML = "<i class='fa fa-cloud-showers-heavy' style='color: rgb(120, 211, 241);'></i>";
+            textStatus.innerHTML = "rainy";
+        }
+        else{
+            weatherCon.innerHTML = "<i class='fa fa-cloud' style='color: blue;'></i>";
+        }
+
+        const curDay = document.getElementById("day");
+        const curDate = document.getElementById("date");
+        const curTime = document.getElementById("time");
+
+        const getCurrentDay = ()=>{      // fetching day
+            var weekDays = [            // array of weekdays
+                "Sun",
+                "Mon",
+                "Tue",
+                "Wed",
+                "Thu",
+                "Fri",
+                "Sat"
+        ]
+            let currentTime = new Date();                        // Date is inbuilt function which provides date,time,months,minutes,weekdays,etc
+            var x = weekDays[currentTime.getDay()];        // currentTime.getDay will give value of weekdays in numbers i.e 0=sunday,1=monday,etc.
+            return x;
+        }
+        const getCurrentDate = ()=>{            // fetching date and month
+            var months = [                  // array of months
+                "Jan",
+                "Feb",
+                "Mar",
+                "Apr",
+                "May",
+                "Jun",
+                "Jul",
+                "Aug",
+                "Sep",
+                "Oct",
+                "Nov",
+                "Dec"
+            ]
+            var nowDate = new Date();               // we need to declare again because we didn't declared previously globally
+            var nowDateIs = nowDate.getDate();
+            var curMonth = nowDate.getMonth();      // month
+            var y = (nowDateIs + " " + months[curMonth]);
+            return y;
+        }
+        
+        const getCurrentTime = ()=>{
+            var nowTime = new Date();
+            var hours = nowTime.getHours();         // fetchnig hours from time/date
+            var minutes = nowTime.getMinutes();     // fetching minutes from time
+            var z = (hours + ":" + minutes);
+            return z;
+        }
+
+        curDay.innerHTML = getCurrentDay();
+        curDate.innerHTML = getCurrentDate();
+        curTime.innerHTML = getCurrentTime();
+        
+
+    </script>
+</body>
+</html>
